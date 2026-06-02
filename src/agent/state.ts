@@ -2,58 +2,58 @@ import { BaseMessage, BaseMessageLike } from "@langchain/core/messages";
 import { Annotation, messagesStateReducer } from "@langchain/langgraph";
 
 /**
- * A graph's StateAnnotation defines three main things:
- * 1. The structure of the data to be passed between nodes (which "channels" to read from/write to and their types)
- * 2. Default values for each field
- * 3. Reducers for the state's. Reducers are functions that determine how to apply updates to the state.
- * See [Reducers](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#reducers) for more information.
+ * 图的 StateAnnotation 主要定义三部分内容：
+ * 1. 在节点之间传递的数据结构（要读写哪些“通道”及其类型）
+ * 2. 每个字段的默认值
+ * 3. 状态字段的 reducer。reducer 用于决定如何将更新应用到状态上。
+ * 更多信息请参见 [Reducers](https://langchain-ai.github.io/langgraphjs/concepts/low_level/#reducers)。
  */
 
-// This is the primary state of your agent, where you can store any information
+// 这是 agent 的主状态，你可以在这里存储任意需要的信息
 export const StateAnnotation = Annotation.Root({
   /**
-   * Messages track the primary execution state of the agent.
+   * messages 用于跟踪 agent 的主要执行状态。
    *
-   * Typically accumulates a pattern of:
+   * 通常会按如下模式不断累积：
    *
-   * 1. HumanMessage - user input
-   * 2. AIMessage with .tool_calls - agent picking tool(s) to use to collect
-   *     information
-   * 3. ToolMessage(s) - the responses (or errors) from the executed tools
+   * 1. HumanMessage - 用户输入
+   * 2. 含有 .tool_calls 的 AIMessage - agent 选择工具来收集
+   *     信息
+   * 3. ToolMessage（一个或多个）- 工具执行后的响应（或错误）
    *
-   *     (... repeat steps 2 and 3 as needed ...)
-   * 4. AIMessage without .tool_calls - agent responding in unstructured
-   *     format to the user.
+   *     （... 按需重复步骤 2 和 3 ...）
+   * 4. 不含 .tool_calls 的 AIMessage - agent 以非结构化
+   *     形式回复用户。
    *
-   * 5. HumanMessage - user responds with the next conversational turn.
+   * 5. HumanMessage - 用户给出下一轮对话输入。
    *
-   *     (... repeat steps 2-5 as needed ... )
+   *     （... 按需重复步骤 2-5 ...）
    *
-   * Merges two lists of messages or message-like objects with role and content,
-   * updating existing messages by ID.
+   * 它会合并两组消息（或类消息对象，包含 role 与 content），
+   * 并按 ID 更新已有消息。
    *
-   * Message-like objects are automatically coerced by `messagesStateReducer` into
-   * LangChain message classes. If a message does not have a given id,
-   * LangGraph will automatically assign one.
+   * 类消息对象会被 `messagesStateReducer` 自动转换为
+   * LangChain 的消息类。如果消息没有给定 id，
+   * LangGraph 会自动分配一个。
    *
-   * By default, this ensures the state is "append-only", unless the
-   * new message has the same ID as an existing message.
+   * 默认情况下，这能保证状态是“仅追加（append-only）”的，除非
+   * 新消息与已有消息拥有相同 ID。
    *
-   * Returns:
-   *     A new list of messages with the messages from \`right\` merged into \`left\`.
-   *     If a message in \`right\` has the same ID as a message in \`left\`, the
-   *     message from \`right\` will replace the message from \`left\`.`
+   * 返回：
+   *     一个新的消息列表，将 \`right\` 中的消息合并到 \`left\` 中。
+   *     如果 \`right\` 中某条消息与 \`left\` 中某条消息 ID 相同，
+   *     则用 \`right\` 的消息替换 \`left\` 的消息。`
    */
   messages: Annotation<BaseMessage[], BaseMessageLike[]>({
     reducer: messagesStateReducer,
     default: () => [],
   }),
   /**
-   * Feel free to add additional attributes to your state as needed.
-   * Common examples include retrieved documents, extracted entities, API connections, etc.
+   * 你可以按需为状态添加更多属性。
+   * 常见示例包括：检索到的文档、提取出的实体、API 连接等。
    *
-   * For simple fields whose value should be overwritten by the return value of a node,
-   * you don't need to define a reducer or default.
+   * 对于值应直接由节点返回结果覆盖的简单字段，
+   * 你不需要为其定义 reducer 或默认值。
    */
   // additionalField: Annotation<string>,
 });

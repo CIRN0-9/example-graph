@@ -20,3 +20,6 @@ dist
 
 # LangGraph API
 .langgraph_api
+
+# 语料目录
+docs-repo

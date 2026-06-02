@@ -1,0 +1,12 @@
+{
+  "sourceRoot": "D:\\study\\lang-graph\\new-project\\docs-repo\\design-docs\\docs\\component",
+  "totalFiles": 24,
+  "totalChunks": 164,
+  "maxChunkChars": 1800,
+  "targetChunkChars": 1200,
+  "generatedAt": "2026-05-15T10:59:44.352Z",
+  "chunkTypes": {
+    "section-text": 130,
+    "demo": 34
+  }
+}
