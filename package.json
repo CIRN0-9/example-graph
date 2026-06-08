@@ -22,7 +22,8 @@
     "collect:component-docs": "node scripts/collect-component-docs.js",
     "split:component-docs": "node scripts/split-markdown-docs.js",
     "embed:component-docs": "node scripts/embedding-chuncks.js",
-    "upsert:component-docs": "node scripts/upsert-vectors-qdrant.js"
+    "upsert:component-docs": "node scripts/upsert-vectors-qdrant.js",
+    "dev": "npx @langchain/langgraph-cli dev"
   },
   "dependencies": {
     "@langchain/anthropic": "^1.3.29",
